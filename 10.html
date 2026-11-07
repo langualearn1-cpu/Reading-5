@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Grammar 1 - Page 10 (Singular & Plural) - الدرس الناطق التفاعلي</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Comic+Neue:wght@700&family=Fredoka:wght@600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #fdf3e7 0%, #f5e6d3 50%, #efe0cc 100%);
+            min-height: 100vh;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow-x: hidden;
+        }
+
+        .worksheet-font {
+            font-family: 'Fredoka', 'Nunito', 'Comic Neue', sans-serif;
+            letter-spacing: 0.01em;
+        }
+
+        .arabic-font {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* Poster Outer Frame matching the beige patterned page */
+        .poster-frame {
+            background-color: #f6eadb;
+            background-image:
+                radial-gradient(#e6d2b8 1.5px, transparent 1.5px),
+                radial-gradient(#ebd8c0 1.5px, #f6eadb 1.5px);
+            background-size: 44px 44px;
+            background-position: 0 0, 22px 22px;
+            box-shadow: 0 20px 60px rgba(78, 52, 46, 0.22), 0 0 0 6px rgba(255, 255, 255, 0.95);
+        }
+
+        /* Inner white rounded sheet */
+        .inner-sheet {
+            background-color: #fcf9f2;
+            border-radius: 26px;
+            box-shadow: inset 0 0 0 2px #eddcc4;
+        }
+
+        /* Section 1 Boxes (Singular & Plural boxes) */
+        .word-card-box {
+            background-color: #f3e4d0;
+            border: 2.5px solid #4a332a;
+            border-radius: 14px;
+            transition: background-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .word-card-box.row-active {
+            background-color: #fff9c4;
+            box-shadow: 0 0 0 2.5px #f59e0b;
+        }
+
+        /* Static Word Highlight (100% Fixed - NO scaling, NO jumping) */
+        .eng-read-target {
+            display: inline-block;
+            padding: 1px 8px;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: background-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .eng-read-target:hover {
+            background-color: rgba(253, 224, 71, 0.45);
+        }
+
+        .eng-read-target.word-active {
+            background-color: #ffe082 !important;
+            box-shadow: 0 0 0 2.5px #ff8f00 !important;
+        }
+
+        /* Dotted Answer Slot for Rows 3 to 8 */
+        .plural-blank-slot {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 112px;
+            padding: 1px 8px;
+            border-radius: 9px;
+            cursor: pointer;
+        }
+
+        .plural-blank-slot .dots-line {
+            color: #3e2723;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        .plural-blank-slot .plural-answer-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #1d4ed8;
+            background-color: #f3e4d0;
+            border-radius: 8px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .show-all-answers .plural-blank-slot .plural-answer-text,
+        .plural-blank-slot.revealed .plural-answer-text {
+            opacity: 1;
+        }
+
+        .plural-blank-slot.word-active,
+        .plural-blank-slot.word-active .plural-answer-text {
+            background-color: #ffe082 !important;
+            box-shadow: 0 0 0 2.5px #ff8f00 !important;
+        }
+
+        /* Choose Card Styling */
+        .choose-card {
+            background-color: #f3e4d0;
+            border: 2.5px solid #4a332a;
+            border-radius: 16px;
+            transition: background-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        /* Correct option badge when answers are shown */
+        .show-all-answers .choice-correct,
+        .choice-correct.selected-choice {
+            color: #15803d;
+            text-decoration: underline;
+            text-decoration-thickness: 3px;
+            text-underline-offset: 4px;
+        }
+
+        /* Floating Pointing Finger (100% Static under the word, NEVER sliding on letters) */
+        #reading-finger {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            transform: translate(-50%, 0);
+            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.32));
+        }
+
+        #reading-finger.visible {
+            opacity: 1;
+        }
+
+        #reading-finger.reading-active {
+            transform: translate(-50%, 0);
+        }
+
+        .finger-ripple {
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            width: 22px;
+            height: 22px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 3px solid #ff2e7e;
+            background: rgba(255, 230, 0, 0.45);
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #d97706; border-radius: 99px; }
+    </style>
+</head>
+<body class="py-3 px-2 sm:px-4 md:px-6 flex flex-col items-center">
+
+    <!-- ==================== TOP INTERACTIVE CONTROL BAR ==================== -->
+    <div class="w-full max-w-[880px] mb-3 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg border border-amber-200 p-3 flex flex-wrap items-center justify-between gap-2 z-40 sticky top-2">
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <!-- Auto Play All English Words in Order -->
+            <button id="btn-auto-play" onclick="toggleAutoPlay()" class="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-white bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-700 hover:to-rose-700 shadow-md shadow-amber-200 transition active:scale-95 text-sm sm:text-base">
+                <i id="icon-auto-play" class="fa-solid fa-play"></i>
+                <span id="text-auto-play">قراءة الدرس كاملاً بالترتيب</span>
+            </button>
+
+            <!-- Play Section 2 (Choose) Only -->
+            <button onclick="playChooseSectionOnly()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold text-amber-950 bg-amber-100 hover:bg-amber-200 border border-amber-300 transition text-xs sm:text-sm" title="قراءة سؤال الاختيار فقط">
+                <i class="fa-solid fa-circle-check text-amber-700"></i>
+                <span>قراءة سؤال الاختيار</span>
+            </button>
+
+            <!-- Show/Hide Answers -->
+            <button id="btn-answers" onclick="toggleShowAllAnswers()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-600 shadow-sm transition text-xs sm:text-sm">
+                <i class="fa-solid fa-eye"></i>
+                <span id="answers-label">الإجابات معروضة</span>
+            </button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <!-- Educational Teacher Voice Selector -->
+            <div class="flex items-center gap-1 bg-amber-50 border border-amber-200 rounded-xl px-2.5 py-1.5">
+                <i class="fa-solid fa-chalkboard-user text-amber-700 text-xs sm:text-sm"></i>
+                <select id="voice-select" onchange="handleVoiceChange(this.value)" class="bg-transparent font-bold text-amber-950 text-xs sm:text-sm focus:outline-none cursor-pointer max-w-[150px] sm:max-w-[185px]" title="اختر صوت المعلم التعليمي">
+                    <option value="auto">صوت المعلم التعليمي (تلقائي)</option>
+                </select>
+            </div>
+
+            <!-- Speed Toggle -->
+            <button id="btn-speed" onclick="cycleSpeechSpeed()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold text-sky-900 bg-sky-100 hover:bg-sky-200 border border-sky-200 transition text-xs sm:text-sm">
+                <i class="fa-solid fa-gauge-high text-sky-600"></i>
+                <span id="speed-label">السرعة: تعليمي واضح</span>
+            </button>
+
+            <!-- Repeat Toggle -->
+            <button id="btn-repeat" onclick="toggleRepeatWord()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold text-purple-900 bg-purple-100 hover:bg-purple-200 border border-purple-200 transition text-xs sm:text-sm">
+                <i class="fa-solid fa-repeat text-purple-600"></i>
+                <span id="repeat-label">النطق: مرة واحدة</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN POSTER CONTAINER (PAGE 10) ==================== -->
+    <main id="poster-container" class="poster-frame show-all-answers w-full max-w-[880px] rounded-[28px] p-3 sm:p-5 relative overflow-hidden flex flex-col justify-between">
+
+        <!-- Decorative Background Icons on Outer Frame (Stars, Pencils, Hearts) -->
+        <div class="pointer-events-none absolute inset-0 overflow-hidden opacity-45">
+            <svg viewBox="0 0 880 1240" class="w-full h-full">
+                <!-- Left & Right margin small sketched pencils & stars -->
+                <g fill="#d8be9e" stroke="#b99872" stroke-width="1.2">
+                    <polygon points="35,45 42,60 58,62 46,73 49,89 35,81 21,89 24,73 12,62 28,60"/>
+                    <polygon points="845,35 852,50 868,52 856,63 859,79 845,71 831,79 834,63 822,52 838,50"/>
+                    <polygon points="650,18 655,28 666,29 658,37 660,48 650,42 640,48 642,37 634,29 645,28"/>
+                    <polygon points="18,315 24,327 37,329 27,338 30,350 18,344 6,350 9,338 -1,329 12,327"/>
+                    <polygon points="862,380 868,392 881,394 871,403 874,415 862,409 850,415 853,403 843,394 856,392"/>
+                    <polygon points="18,680 24,692 37,694 27,703 30,715 18,709 6,715 9,703 -1,694 12,692"/>
+                    <polygon points="860,720 866,732 879,734 869,743 872,755 860,749 848,755 851,743 841,734 854,732"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- ==================== 1. HEADER: Top Grammar 1 + Kids + Yellow Banner ==================== -->
+        <header class="relative z-10 w-full flex flex-col items-center pt-1 pb-2" dir="ltr">
+            <!-- "Top Grammar 1" Title -->
+            <div class="flex items-center justify-center gap-1.5 mb-1">
+                <span id="eng-header-title" onclick="speakStaticEnglish('Top Grammar 1', this)" class="eng-read-target worksheet-font font-black text-2xl sm:text-[31px] text-[#2b170e] tracking-tight leading-none">
+                    Top Grammar
+                </span>
+                <span onclick="speakStaticEnglish('Top Grammar 1', document.getElementById('eng-header-title'))" class="cursor-pointer inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#4a2e1b] text-[#fdf6e4] worksheet-font font-black text-xl shadow-sm">
+                    1
+                </span>
+            </div>
+
+            <!-- Yellow Banner with 4 Cartoon Kids Reading Books on Left & Right -->
+            <div class="w-full relative flex items-center justify-center px-1 sm:px-4">
+                <svg viewBox="0 0 840 126" class="w-full h-auto overflow-visible">
+                    <!-- Center Rounded Yellow Banner -->
+                    <rect x="175" y="12" width="490" height="106" rx="22" fill="#fce192" stroke="#4a332a" stroke-width="3"/>
+
+                    <!-- Arabic Main Title inside Banner (Visual Only - Not Spoken) -->
+                    <text x="420" y="62" text-anchor="middle" font-family="Cairo, sans-serif" font-weight="900" font-size="41" fill="#6b3074">
+                        المفرد والجمع
+                    </text>
+
+                    <!-- LEFT KIDS (Girl & Boy holding open books) -->
+                    <!-- Kid 1: Cute Girl on far left -->
+                    <g transform="translate(22, 10)">
+                        <!-- Head & Hair -->
+                        <path d="M12,48 C6,14 68,14 62,48 Z" fill="#8d4925" stroke="#3e2723" stroke-width="2.2"/>
+                        <path d="M16,28 Q37,14 58,28" fill="none" stroke="#f6c478" stroke-width="4.5" stroke-linecap="round"/>
+                        <ellipse cx="37" cy="44" rx="24" ry="20" fill="#fbd3b4" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Eyes & Smile -->
+                        <circle cx="29" cy="43" r="2.4" fill="#2b170e"/>
+                        <circle cx="45" cy="43" r="2.4" fill="#2b170e"/>
+                        <ellipse cx="23" cy="48" rx="4" ry="2.2" fill="#f48fb1" opacity="0.6"/>
+                        <ellipse cx="51" cy="48" rx="4" ry="2.2" fill="#f48fb1" opacity="0.6"/>
+                        <path d="M33,50 Q37,54 41,50" fill="none" stroke="#3e2723" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Pink Shirt -->
+                        <path d="M16,64 L58,64 L62,98 L12,98 Z" fill="#f48fb1" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Open Green/Teal Book -->
+                        <path d="M12,72 L37,78 L62,72 L62,106 L37,112 L12,106 Z" fill="#5da99c" stroke="#3e2723" stroke-width="2.2" stroke-linejoin="round"/>
+                        <line x1="37" y1="78" x2="37" y2="112" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Hands holding book -->
+                        <circle cx="13" cy="90" r="5" fill="#fbd3b4" stroke="#3e2723" stroke-width="2"/>
+                        <circle cx="61" cy="90" r="5" fill="#fbd3b4" stroke="#3e2723" stroke-width="2"/>
+                    </g>
+
+                    <!-- Kid 2: Cute Boy next to left banner edge -->
+                    <g transform="translate(96, 6)">
+                        <!-- Hair & Head -->
+                        <ellipse cx="38" cy="44" rx="25" ry="20" fill="#fbd3b4" stroke="#3e2723" stroke-width="2.2"/>
+                        <path d="M12,38 C12,12 64,12 64,38 C52,26 24,26 12,38 Z" fill="#9c5227" stroke="#3e2723" stroke-width="2.2"/>
+                        <circle cx="30" cy="44" r="2.4" fill="#2b170e"/>
+                        <circle cx="46" cy="44" r="2.4" fill="#2b170e"/>
+                        <ellipse cx="24" cy="49" rx="4" ry="2.2" fill="#f48fb1" opacity="0.6"/>
+                        <ellipse cx="52" cy="49" rx="4" ry="2.2" fill="#f48fb1" opacity="0.6"/>
+                        <path d="M34,51 Q38,55 42,51" fill="none" stroke="#3e2723" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Blue Shirt -->
+                        <path d="M17,64 L59,64 L63,100 L13,100 Z" fill="#90caf9" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Open Orange/Red Book -->
+                        <path d="M12,74 L38,80 L64,74 L64,108 L38,114 L12,108 Z" fill="#e65c40" stroke="#3e2723" stroke-width="2.2" stroke-linejoin="round"/>
+                        <line x1="38" y1="80" x2="38" y2="114" stroke="#3e2723" stroke-width="2.2"/>
+                        <circle cx="13" cy="92" r="5" fill="#fbd3b4" stroke="#3e2723" stroke-width="2"/>
+                        <circle cx="63" cy="92" r="5" fill="#fbd3b4" stroke="#3e2723" stroke-width="2"/>
+                    </g>
+
+                    <!-- RIGHT KIDS (Two Boys waving & holding open books) -->
+                    <!-- Kid 3: Boy in pink shirt with blue book -->
+                    <g transform="translate(658, 4)">
+                        <!-- Waving Left Arm -->
+                        <path d="M18,68 L-4,50" stroke="#fbd3b4" stroke-width="8" stroke-linecap="round"/>
+                        <path d="M18,68 L-4,50" stroke="#3e2723" stroke-width="2.2" stroke-linecap="round"/>
+                        <circle cx="-5" cy="49" r="5.5" fill="#fbd3b4" stroke="#3e2723" stroke-width="2"/>
+                        <!-- Head & Hair -->
+                        <ellipse cx="40" cy="42" rx="25" ry="20" fill="#fbd3b4" stroke="#3e2723" stroke-width="2.2"/>
+                        <path d="M14,36 C14,8 66,8 66,36 C54,24 26,24 14,36 Z" fill="#6d3b1e" stroke="#3e2723" stroke-width="2.2"/>
+                        <circle cx="32" cy="42" r="2.4" fill="#2b170e"/>
+                        <circle cx="48" cy="42" r="2.4" fill="#2b170e"/>
+                        <path d="M35,50 Q40,55 45,50" fill="none" stroke="#3e2723" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Pink Shirt -->
+                        <path d="M18,62 L62,62 L66,100 L14,100 Z" fill="#f48fb1" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Open Blue Book -->
+                        <path d="M14,74 L40,80 L66,74 L66,108 L40,114 L14,108 Z" fill="#5c9ce6" stroke="#3e2723" stroke-width="2.2" stroke-linejoin="round"/>
+                        <line x1="40" y1="80" x2="40" y2="114" stroke="#3e2723" stroke-width="2.2"/>
+                        <circle cx="15" cy="92" r="5" fill="#fbd3b4" stroke="#3e2723" stroke-width="2"/>
+                        <circle cx="65" cy="92" r="5" fill="#fbd3b4" stroke="#3e2723" stroke-width="2"/>
+                    </g>
+
+                    <!-- Kid 4: Boy on far right with yellow book -->
+                    <g transform="translate(734, 8)">
+                        <!-- Waving Right Arm -->
+                        <path d="M60,66 L82,48" stroke="#c6865c" stroke-width="8" stroke-linecap="round"/>
+                        <circle cx="83" cy="47" r="5.5" fill="#c6865c" stroke="#3e2723" stroke-width="2"/>
+                        <!-- Head & Hair -->
+                        <ellipse cx="38" cy="42" rx="24" ry="20" fill="#c6865c" stroke="#3e2723" stroke-width="2.2"/>
+                        <path d="M13,35 C15,10 61,10 63,35 C50,24 26,24 13,35 Z" fill="#3e2211" stroke="#3e2723" stroke-width="2.2"/>
+                        <circle cx="30" cy="42" r="2.4" fill="#2b170e"/>
+                        <circle cx="46" cy="42" r="2.4" fill="#2b170e"/>
+                        <path d="M33,50 Q38,54 43,50" fill="none" stroke="#3e2723" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Green Shirt -->
+                        <path d="M16,62 L60,62 L64,98 L12,98 Z" fill="#9ccc65" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Open Yellow Book -->
+                        <path d="M12,72 L38,78 L64,72 L64,106 L38,112 L12,106 Z" fill="#ffca28" stroke="#3e2723" stroke-width="2.2" stroke-linejoin="round"/>
+                        <line x1="38" y1="78" x2="38" y2="112" stroke="#3e2723" stroke-width="2.2"/>
+                        <circle cx="13" cy="90" r="5" fill="#c6865c" stroke="#3e2723" stroke-width="2"/>
+                        <circle cx="63" cy="90" r="5" fill="#c6865c" stroke="#3e2723" stroke-width="2"/>
+                    </g>
+                </svg>
+
+                <!-- Interactive English Subtitle Overlay inside the Yellow Banner: "(Singular & Plural)" -->
+                <div class="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20">
+                    <span id="eng-header-sub" onclick="speakStaticEnglish('Singular and Plural', this)" class="eng-read-target worksheet-font font-black text-xl sm:text-[28px] text-[#2b170e] whitespace-nowrap leading-none">
+                        (Singular &amp; Plural)
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==================== 2. INNER WHITE WORKSHEET CARD ==================== -->
+        <div class="inner-sheet relative z-10 px-2.5 sm:px-6 pt-3 pb-5 flex flex-col gap-3" dir="ltr">
+
+            <!-- SECTION 1 PILL HEADER: Change into plural • التحويل إلى الجمع -->
+            <div class="w-full flex justify-center">
+                <div class="bg-[#d6b7e6] border-2 border-[#b794cc] rounded-full px-5 sm:px-8 py-1.5 flex flex-wrap items-center justify-center gap-2 shadow-sm">
+                    <span id="eng-sec1-title" onclick="speakStaticEnglish('Change into plural', this)" class="eng-read-target worksheet-font font-black text-xl sm:text-[27px] text-[#231815] leading-tight">
+                        Change into plural
+                    </span>
+                    <span class="text-[#231815] font-black text-xl">•</span>
+                    <span class="arabic-font font-black text-xl sm:text-[26px] text-[#231815] leading-tight" dir="rtl">
+                        التحويل إلى الجمع
+                    </span>
+                </div>
+            </div>
+
+            <!-- SECTION 1: 8 CONVERSION ROWS -->
+            <div id="plural-rows-container" class="flex flex-col gap-2.5">
+                <!-- Populated dynamically by JS with exact SVG illustrations -->
+            </div>
+
+            <!-- SECTION 2: CHOOSE THE CORRECT WORD • اختر الكلمة الصحيحة -->
+            <div class="mt-2 bg-[#fbe088] rounded-[24px] p-2.5 sm:p-3.5 shadow-sm">
+                <div class="border-[2.5px] border-dashed border-[#4a332a] rounded-[18px] bg-[#fdf6e4] px-2.5 sm:px-4 pt-2 pb-3.5">
+                    <!-- Section 2 Title -->
+                    <div class="flex flex-wrap items-center justify-center gap-2 -mt-5 mb-2.5">
+                        <div class="bg-[#fbe088] px-4 py-0.5 rounded-full flex items-center gap-2">
+                            <span id="eng-sec2-title" onclick="speakStaticEnglish('Choose the correct word', this)" class="eng-read-target worksheet-font font-black text-lg sm:text-[25px] text-[#231815]">
+                                Choose the correct word
+                            </span>
+                            <span class="text-[#231815] font-black text-lg">•</span>
+                            <span class="arabic-font font-black text-lg sm:text-[24px] text-[#231815]" dir="rtl">
+                                اختر الكلمة الصحيحة
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 6 Choose Cards Grid (3 columns on desktop/tablet, 2 on small mobile) -->
+                    <div id="choose-grid-container" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <!-- Populated dynamically by JS with exact SVG illustrations -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== 3. FOOTER: Mrs. Engy Moris | 10 | TOP + Kids on Pencil ==================== -->
+        <footer class="relative z-10 w-full pt-3 pb-1 px-3 sm:px-6 flex items-center justify-between gap-2 select-none" dir="ltr">
+            <!-- Left: Mrs. Engy Moris -->
+            <div onclick="speakStaticEnglish('Mrs. Engy Moris', document.getElementById('eng-footer-author'))" class="cursor-pointer">
+                <span id="eng-footer-author" class="eng-read-target worksheet-font font-black text-xl sm:text-[26px] text-[#3e2723]">
+                    Mrs. Engy Moris
+                </span>
+            </div>
+
+            <!-- Center: Page Number 10 -->
+            <div class="flex items-center gap-3">
+                <span class="worksheet-font font-black text-2xl sm:text-[28px] text-[#3e2723]">10</span>
+            </div>
+
+            <!-- Right: Colorful TOP Logo + Two Kids Riding Giant Yellow Pencil -->
+            <div class="flex items-center gap-1">
+                <div id="eng-footer-top" onclick="speakStaticEnglish('Top', this)" class="eng-read-target flex items-center gap-0.5 cursor-pointer">
+                    <span class="worksheet-font font-black text-2xl sm:text-[32px] text-[#1e5aa8] leading-none">T</span>
+                    <!-- Colorful O ring -->
+                    <svg viewBox="0 0 36 36" class="w-7 h-7 sm:w-8 sm:h-8">
+                        <path d="M18,4 A14,14 0 0,1 32,18 L24,18 A6,6 0 0,0 18,12 Z" fill="#f59e0b"/>
+                        <path d="M32,18 A14,14 0 0,1 18,32 L18,24 A6,6 0 0,0 24,18 Z" fill="#ef4444"/>
+                        <path d="M18,32 A14,14 0 0,1 4,18 L12,18 A6,6 0 0,0 18,24 Z" fill="#3b82f6"/>
+                        <path d="M4,18 A14,14 0 0,1 18,4 L18,12 A6,6 0 0,0 12,18 Z" fill="#10b981"/>
+                    </svg>
+                    <span class="worksheet-font font-black text-2xl sm:text-[32px] text-[#1e40af] leading-none">P</span>
+                </div>
+
+                <!-- Girl & Boy riding a slanted giant yellow pencil -->
+                <svg viewBox="0 0 150 75" class="w-28 sm:w-36 h-16 overflow-visible -ml-1">
+                    <!-- Giant Yellow Pencil -->
+                    <g transform="translate(8, 38) rotate(8)">
+                        <polygon points="0,12 22,2 22,22" fill="#f5d0a9" stroke="#3e2723" stroke-width="1.8"/>
+                        <polygon points="0,12 8,8.5 8,15.5" fill="#3e2723"/>
+                        <rect x="22" y="2" width="92" height="20" fill="#fbbf24" stroke="#3e2723" stroke-width="1.8"/>
+                        <line x1="22" y1="8.5" x2="114" y2="8.5" stroke="#d97706" stroke-width="1.4"/>
+                        <line x1="22" y1="15.5" x2="114" y2="15.5" stroke="#d97706" stroke-width="1.4"/>
+                        <rect x="114" y="2" width="10" height="20" fill="#93c5fd" stroke="#3e2723" stroke-width="1.8"/>
+                        <path d="M124,2 L134,2 C138,2 138,22 134,22 L124,22 Z" fill="#f472b6" stroke="#3e2723" stroke-width="1.8"/>
+                    </g>
+                    <!-- Cute Girl Sitting on Pencil (Left) -->
+                    <g transform="translate(45, 4)">
+                        <circle cx="18" cy="18" r="11" fill="#fbd3b4" stroke="#3e2723" stroke-width="1.8"/>
+                        <path d="M7,16 C8,4 28,4 29,16 C23,11 13,11 7,16 Z" fill="#8d4925" stroke="#3e2723" stroke-width="1.6"/>
+                        <circle cx="15" cy="18" r="1.5" fill="#2b170e"/>
+                        <circle cx="21" cy="18" r="1.5" fill="#2b170e"/>
+                        <path d="M16,22 Q18,24 20,22" fill="none" stroke="#3e2723" stroke-width="1.5"/>
+                        <path d="M12,29 L24,29 L26,43 L10,43 Z" fill="#f472b6" stroke="#3e2723" stroke-width="1.6"/>
+                    </g>
+                    <!-- Cute Boy Sitting on Pencil (Right) -->
+                    <g transform="translate(82, 2)">
+                        <circle cx="18" cy="18" r="11" fill="#fbd3b4" stroke="#3e2723" stroke-width="1.8"/>
+                        <path d="M7,15 C8,3 28,3 29,15 C23,10 13,10 7,15 Z" fill="#6d3b1e" stroke="#3e2723" stroke-width="1.6"/>
+                        <circle cx="15" cy="18" r="1.5" fill="#2b170e"/>
+                        <circle cx="21" cy="18" r="1.5" fill="#2b170e"/>
+                        <path d="M16,22 Q18,24 20,22" fill="none" stroke="#3e2723" stroke-width="1.5"/>
+                        <path d="M12,29 L24,29 L26,44 L10,44 Z" fill="#fb923c" stroke="#3e2723" stroke-width="1.6"/>
+                    </g>
+                </svg>
+            </div>
+        </footer>
+    </main>
+
+    <!-- ==================== THE STEADY POINTING FINGER (NO LETTER MOVEMENT) ==================== -->
+    <div id="reading-finger" aria-hidden="true">
+        <div class="finger-ripple"></div>
+        <!-- Clean 3D-Styled Pointing Hand SVG pointing UP directly under the whole English word -->
+        <svg width="58" height="72" viewBox="0 0 68 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="skinGrad" x1="15" y1="4" x2="52" y2="68" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#FFE0C2"/>
+                    <stop offset="55%" stop-color="#FFCBA4"/>
+                    <stop offset="100%" stop-color="#F2AC7E"/>
+                </linearGradient>
+                <linearGradient id="cuffGrad" x1="16" y1="62" x2="54" y2="82" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#FF5722"/>
+                    <stop offset="100%" stop-color="#D84315"/>
+                </linearGradient>
+            </defs>
+            <circle cx="30" cy="7" r="6" fill="#FFEB3B" opacity="0.85"/>
+            <path d="M23 36V12C23 7.58172 26.5817 4 31 4C35.4183 4 39 7.58172 39 12V34" fill="url(#skinGrad)" stroke="#8D4E2A" stroke-width="2.6" stroke-linecap="round"/>
+            <path d="M26.5 11.5C26.5 8.8 28.5 7 31 7C33.5 7 35.5 8.8 35.5 11.5V14.5C35.5 15.3 34.8 16 34 16H28C27.2 16 26.5 15.3 26.5 14.5V11.5Z" fill="#FFF3E8" stroke="#D79973" stroke-width="1.2"/>
+            <path d="M39 29C39 26.2 41.2 24 44 24C46.8 24 49 26.2 49 29V36C49 33.2 51.2 31 54 31C56.8 31 59 33.2 59 36V45C59 56.5 50.5 65 39 65H27C17.6 65 11 58.2 11 48.5V41C11 36.5 14.8 33 19.2 33C21.2 33 23 34.2 23 36" fill="url(#skinGrad)" stroke="#8D4E2A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 45C12 40.5 16 37 20.5 37H25C27.8 37 30 39.2 30 42C30 44.8 27.8 47 25 47H18" fill="url(#skinGrad)" stroke="#8D4E2A" stroke-width="2.6" stroke-linecap="round"/>
+            <path d="M39 29V41" stroke="#8D4E2A" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M49 33V43" stroke="#8D4E2A" stroke-width="2.4" stroke-linecap="round"/>
+            <rect x="17" y="62" width="36" height="17" rx="6" fill="url(#cuffGrad)" stroke="#BF360C" stroke-width="2.4"/>
+            <circle cx="25" cy="70.5" r="2.6" fill="#FFD54F"/>
+            <circle cx="45" cy="70.5" r="2.6" fill="#FFD54F"/>
+        </svg>
+    </div>
+
+    <!-- ==================== APPLICATION LOGIC & HD VECTOR ILLUSTRATIONS ==================== -->
+    <script>
+        /**
+         * High-Resolution Vector Illustrations matching every single icon in Page 10 (`image_7918fa.jpg`)
+         */
+        function getIllustrationSVG(type, sizeClass = "w-12 h-12") {
+            switch (type) {
+                case 'cat':
+                    return `<svg viewBox="0 0 64 60" class="${sizeClass} shrink-0">
+                        <!-- Ears -->
+                        <polygon points="10,26 8,6 26,16" fill="#f6ad55" stroke="#3e2723" stroke-width="2.2" stroke-linejoin="round"/>
+                        <polygon points="54,26 56,6 38,16" fill="#f6ad55" stroke="#3e2723" stroke-width="2.2" stroke-linejoin="round"/>
+                        <polygon points="12,23 11,11 22,17" fill="#f48fb1"/>
+                        <polygon points="52,23 53,11 42,17" fill="#f48fb1"/>
+                        <!-- Head -->
+                        <ellipse cx="32" cy="34" rx="23" ry="19" fill="#f6ad55" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Forehead Stripes -->
+                        <line x1="32" y1="16" x2="32" y2="23" stroke="#9c4221" stroke-width="2.4" stroke-linecap="round"/>
+                        <line x1="27" y1="17" x2="28" y2="22" stroke="#9c4221" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="37" y1="17" x2="36" y2="22" stroke="#9c4221" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Eyes & Nose -->
+                        <circle cx="23" cy="32" r="2.8" fill="#2b170e"/>
+                        <circle cx="41" cy="32" r="2.8" fill="#2b170e"/>
+                        <polygon points="29,37 35,37 32,41" fill="#f48fb1" stroke="#3e2723" stroke-width="1.4"/>
+                        <path d="M27,43 Q32,46 37,43" fill="none" stroke="#3e2723" stroke-width="1.8" stroke-linecap="round"/>
+                        <!-- Whiskers -->
+                        <line x1="4" y1="34" x2="15" y2="36" stroke="#3e2723" stroke-width="1.6" stroke-linecap="round"/>
+                        <line x1="4" y1="40" x2="15" y2="40" stroke="#3e2723" stroke-width="1.6" stroke-linecap="round"/>
+                        <line x1="60" y1="34" x2="49" y2="36" stroke="#3e2723" stroke-width="1.6" stroke-linecap="round"/>
+                        <line x1="60" y1="40" x2="49" y2="40" stroke="#3e2723" stroke-width="1.6" stroke-linecap="round"/>
+                    </svg>`;
+
+                case 'car':
+                    return `<svg viewBox="0 0 84 48" class="${sizeClass} shrink-0">
+                        <!-- Car Body -->
+                        <path d="M14,24 L24,10 L60,10 L70,24 L78,25 C81,26 82,30 82,35 L82,38 L4,38 L4,33 C4,28 7,25 14,24 Z" fill="#dc2626" stroke="#3e2723" stroke-width="2.2" stroke-linejoin="round"/>
+                        <!-- Windows -->
+                        <path d="M26,13 L40,13 L40,23 L18,23 Z" fill="#bae6fd" stroke="#3e2723" stroke-width="1.8" stroke-linejoin="round"/>
+                        <path d="M44,13 L58,13 L65,23 L44,23 Z" fill="#bae6fd" stroke="#3e2723" stroke-width="1.8" stroke-linejoin="round"/>
+                        <!-- Headlight -->
+                        <ellipse cx="78" cy="30" rx="3" ry="2.2" fill="#fde047" stroke="#3e2723" stroke-width="1.4"/>
+                        <!-- Wheels -->
+                        <circle cx="22" cy="38" r="8" fill="#374151" stroke="#1f2937" stroke-width="2"/>
+                        <circle cx="22" cy="38" r="3.8" fill="#e5e7eb"/>
+                        <circle cx="62" cy="38" r="8" fill="#374151" stroke="#1f2937" stroke-width="2"/>
+                        <circle cx="62" cy="38" r="3.8" fill="#e5e7eb"/>
+                    </svg>`;
+
+                case 'cap': // Black Top Hat with Red Ribbon (used in Row 3 'cap' and Choose Card 6 'hat')
+                    return `<svg viewBox="0 0 72 54" class="${sizeClass} shrink-0">
+                        <!-- Brim -->
+                        <ellipse cx="36" cy="43" rx="31" ry="8" fill="#374151" stroke="#1f2937" stroke-width="2.2"/>
+                        <!-- Hat Cylinder -->
+                        <path d="M18,41 L16,10 C16,6 56,6 56,10 L54,41 Z" fill="#374151" stroke="#1f2937" stroke-width="2.2"/>
+                        <!-- Red Ribbon Band -->
+                        <path d="M17.5,34 Q36,38 54.5,34 L54,41 Q36,45 18,41 Z" fill="#dc2626" stroke="#1f2937" stroke-width="1.8"/>
+                    </svg>`;
+
+                case 'dog':
+                    return `<svg viewBox="0 0 68 58" class="${sizeClass} shrink-0">
+                        <!-- Floppy Brown Ears -->
+                        <ellipse cx="12" cy="30" rx="8" ry="15" transform="rotate(15 12 30)" fill="#8d5524" stroke="#3e2723" stroke-width="2.2"/>
+                        <ellipse cx="56" cy="30" rx="8" ry="15" transform="rotate(-15 56 30)" fill="#8d5524" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Head -->
+                        <ellipse cx="34" cy="31" rx="21" ry="18" fill="#f5d0a9" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Brown Patch around Left Eye -->
+                        <ellipse cx="25" cy="28" rx="7" ry="6" fill="#a16207" opacity="0.45"/>
+                        <!-- Eyes & Nose -->
+                        <circle cx="25" cy="28" r="2.8" fill="#2b170e"/>
+                        <circle cx="43" cy="28" r="2.8" fill="#2b170e"/>
+                        <ellipse cx="34" cy="34" rx="4.2" ry="3" fill="#3e2723"/>
+                        <!-- Pink Tongue -->
+                        <path d="M31,41 Q34,49 37,41" fill="#f472b6" stroke="#3e2723" stroke-width="1.5"/>
+                        <path d="M28,39 Q34,43 40,39" fill="none" stroke="#3e2723" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>`;
+
+                case 'pen':
+                    return `<svg viewBox="0 0 56 56" class="${sizeClass} shrink-0">
+                        <g transform="translate(28, 28) rotate(38) translate(-28, -28)">
+                            <!-- Pen Body -->
+                            <rect x="23" y="6" width="10" height="36" rx="3" fill="#3b82f6" stroke="#1e293b" stroke-width="2"/>
+                            <!-- Clip -->
+                            <path d="M33,10 L37,12 L37,24 L33,24" fill="none" stroke="#1e293b" stroke-width="2" stroke-linejoin="round"/>
+                            <!-- Silver Band -->
+                            <rect x="23" y="34" width="10" height="3.5" fill="#e2e8f0" stroke="#1e293b" stroke-width="1.5"/>
+                            <!-- Tip Cone -->
+                            <polygon points="23,42 33,42 28,52" fill="#f8fafc" stroke="#1e293b" stroke-width="2" stroke-linejoin="round"/>
+                            <circle cx="28" cy="52" r="1.6" fill="#1e293b"/>
+                        </g>
+                    </svg>`;
+
+                case 'bug':
+                    return `<svg viewBox="0 0 60 60" class="${sizeClass} shrink-0">
+                        <!-- Legs -->
+                        <g stroke="#2b170e" stroke-width="2.2" stroke-linecap="round">
+                            <line x1="8" y1="26" x2="20" y2="28"/>
+                            <line x1="6" y1="35" x2="20" y2="35"/>
+                            <line x1="8" y1="44" x2="20" y2="42"/>
+                            <line x1="52" y1="26" x2="40" y2="28"/>
+                            <line x1="54" y1="35" x2="40" y2="35"/>
+                            <line x1="52" y1="44" x2="40" y2="42"/>
+                            <!-- Antennae -->
+                            <path d="M26,15 Q22,7 18,9" fill="none"/>
+                            <path d="M34,15 Q38,7 42,9" fill="none"/>
+                        </g>
+                        <!-- Black Head -->
+                        <ellipse cx="30" cy="18" rx="10" ry="7" fill="#2b170e"/>
+                        <!-- Red Shell -->
+                        <ellipse cx="30" cy="36" rx="16" ry="18" fill="#dc2626" stroke="#2b170e" stroke-width="2.2"/>
+                        <line x1="30" y1="18" x2="30" y2="54" stroke="#2b170e" stroke-width="2.2"/>
+                        <!-- Black Dots -->
+                        <circle cx="23" cy="28" r="2.8" fill="#2b170e"/>
+                        <circle cx="37" cy="28" r="2.8" fill="#2b170e"/>
+                        <circle cx="21" cy="37" r="3" fill="#2b170e"/>
+                        <circle cx="39" cy="37" r="3" fill="#2b170e"/>
+                        <circle cx="24" cy="46" r="2.5" fill="#2b170e"/>
+                        <circle cx="36" cy="46" r="2.5" fill="#2b170e"/>
+                    </svg>`;
+
+                case 'bag':
+                    return `<svg viewBox="0 0 60 60" class="${sizeClass} shrink-0">
+                        <!-- Top Handle -->
+                        <path d="M22,12 C22,4 38,4 38,12" fill="none" stroke="#4a332a" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Side Pockets -->
+                        <rect x="8" y="30" width="7" height="18" rx="3" fill="#8b5cf6" stroke="#3e2723" stroke-width="2"/>
+                        <rect x="45" y="30" width="7" height="18" rx="3" fill="#8b5cf6" stroke="#3e2723" stroke-width="2"/>
+                        <!-- Main Backpack Body -->
+                        <path d="M14,20 C14,12 46,12 46,20 L48,50 C48,53 45,54 42,54 L18,54 C15,54 12,53 12,50 Z" fill="#a78bfa" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Top Flap Line -->
+                        <path d="M14,25 Q30,31 46,25" fill="none" stroke="#3e2723" stroke-width="2"/>
+                        <!-- Front Pocket -->
+                        <rect x="19" y="33" width="22" height="16" rx="4" fill="#c4b5fd" stroke="#3e2723" stroke-width="2"/>
+                        <line x1="22" y1="38" x2="38" y2="38" stroke="#3e2723" stroke-width="1.8"/>
+                    </svg>`;
+
+                case 'egg':
+                    return `<svg viewBox="0 0 50 58" class="${sizeClass} shrink-0">
+                        <path d="M25,6 C13,6 7,24 7,36 C7,48 15,54 25,54 C35,54 43,48 43,36 C43,24 37,6 25,6 Z" fill="#f3c69f" stroke="#3e2723" stroke-width="2.2"/>
+                        <ellipse cx="18" cy="22" rx="3" ry="6" transform="rotate(20 18 22)" fill="#fde6d2" opacity="0.65"/>
+                    </svg>`;
+
+                case 'chair':
+                    return `<svg viewBox="0 0 54 68" class="${sizeClass} shrink-0">
+                        <!-- Backrest Posts & Slats -->
+                        <rect x="12" y="6" width="5" height="32" fill="#a16207" stroke="#3e2723" stroke-width="2"/>
+                        <rect x="37" y="6" width="5" height="32" fill="#a16207" stroke="#3e2723" stroke-width="2"/>
+                        <rect x="10" y="8" width="34" height="8" rx="1.5" fill="#b45309" stroke="#3e2723" stroke-width="2"/>
+                        <rect x="12" y="20" width="30" height="6" fill="#b45309" stroke="#3e2723" stroke-width="2"/>
+                        <!-- Seat -->
+                        <polygon points="8,36 46,36 50,43 4,43" fill="#d97706" stroke="#3e2723" stroke-width="2" stroke-linejoin="round"/>
+                        <!-- Legs -->
+                        <rect x="10" y="43" width="5" height="20" fill="#92400e" stroke="#3e2723" stroke-width="2"/>
+                        <rect x="39" y="43" width="5" height="20" fill="#92400e" stroke="#3e2723" stroke-width="2"/>
+                        <rect x="16" y="43" width="4" height="15" fill="#78350f" stroke="#3e2723" stroke-width="1.8"/>
+                        <rect x="34" y="43" width="4" height="15" fill="#78350f" stroke="#3e2723" stroke-width="1.8"/>
+                    </svg>`;
+
+                case 'boy1':
+                case 'boy2':
+                case 'boy3': {
+                    const shirtColors = { boy1: '#5eead4', boy2: '#f87171', boy3: '#facc15' };
+                    const shirt = shirtColors[type] || '#60a5fa';
+                    return `<svg viewBox="0 0 56 64" class="${sizeClass} shrink-0">
+                        <!-- Shirt -->
+                        <path d="M10,58 C10,45 46,45 46,58 Z" fill="${shirt}" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Neck & Head -->
+                        <rect x="23" y="40" width="10" height="8" fill="#fbd3b4"/>
+                        <ellipse cx="28" cy="27" rx="18" ry="16" fill="#fbd3b4" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Hair -->
+                        <path d="M10,23 C10,6 46,6 46,23 C36,15 20,15 10,23 Z" fill="#7c3f1c" stroke="#3e2723" stroke-width="2.2"/>
+                        <!-- Eyes & Smile -->
+                        <circle cx="22" cy="27" r="2.2" fill="#2b170e"/>
+                        <circle cx="34" cy="27" r="2.2" fill="#2b170e"/>
+                        <path d="M24,34 Q28,37 32,34" fill="none" stroke="#3e2723" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>`;
+                }
+
+                case 'fan':
+                    return `<svg viewBox="0 0 60 70" class="${sizeClass} shrink-0">
+                        <!-- Stand & Base -->
+                        <rect x="26" y="46" width="8" height="14" fill="#93c5fd" stroke="#1e293b" stroke-width="2"/>
+                        <path d="M14,64 C14,57 46,57 46,64 Z" fill="#60a5fa" stroke="#1e293b" stroke-width="2"/>
+                        <!-- Cage Circle -->
+                        <circle cx="30" cy="27" r="21" fill="#dbeafe" stroke="#1e293b" stroke-width="2.2"/>
+                        <!-- 3 Blades -->
+                        <path d="M30,27 C22,10 38,10 30,27 Z" fill="#3b82f6" stroke="#1e293b" stroke-width="1.8"/>
+                        <path d="M30,27 C46,32 38,46 30,27 Z" fill="#3b82f6" stroke="#1e293b" stroke-width="1.8"/>
+                        <path d="M30,27 C14,32 22,46 30,27 Z" fill="#3b82f6" stroke="#1e293b" stroke-width="1.8"/>
+                        <circle cx="30" cy="27" r="4.5" fill="#93c5fd" stroke="#1e293b" stroke-width="2"/>
+                    </svg>`;
+
+                case 'ring':
+                    return `<svg viewBox="0 0 60 66" class="${sizeClass} shrink-0">
+                        <!-- Blue Diamond Gem -->
+                        <polygon points="22,6 38,6 44,14 30,25 16,14" fill="#93c5fd" stroke="#1e293b" stroke-width="2" stroke-linejoin="round"/>
+                        <polyline points="16,14 44,14" stroke="#1e293b" stroke-width="1.6"/>
+                        <polyline points="22,6 26,14 30,25 34,14 38,6" fill="none" stroke="#1e293b" stroke-width="1.5"/>
+                        <!-- Gold Ring Band -->
+                        <circle cx="30" cy="42" r="18" fill="none" stroke="#3e2723" stroke-width="8"/>
+                        <circle cx="30" cy="42" r="18" fill="none" stroke="#fbbf24" stroke-width="4.5"/>
+                    </svg>`;
+            }
+            return '';
+        }
+
+        // ==================== SECTION 1 & SECTION 2 DATA ====================
+        const PLURAL_ROWS = [
+            { id: 1, singular: 'Cat', plural: 'Cats', isSolvedInPoster: true,  icon: 'cat', pluralCount: 3 },
+            { id: 2, singular: 'Car', plural: 'Cars', isSolvedInPoster: true,  icon: 'car', pluralCount: 3 },
+            { id: 3, singular: 'cap', plural: 'caps', isSolvedInPoster: false, icon: 'cap', pluralCount: 3 },
+            { id: 4, singular: 'dog', plural: 'dogs', isSolvedInPoster: false, icon: 'dog', pluralCount: 3 },
+            { id: 5, singular: 'pen', plural: 'pens', isSolvedInPoster: false, icon: 'pen', pluralCount: 3 },
+            { id: 6, singular: 'bug', plural: 'bugs', isSolvedInPoster: false, icon: 'bug', pluralCount: 3 },
+            { id: 7, singular: 'bag', plural: 'bags', isSolvedInPoster: false, icon: 'bag', pluralCount: 3 },
+            { id: 8, singular: 'egg', plural: 'eggs', isSolvedInPoster: false, icon: 'egg', pluralCount: 4 }
+        ];
+
+        const CHOOSE_CARDS = [
+            { id: 1, opt1: 'chair', opt2: 'chairs', correct: 'chairs', icons: ['chair', 'chair', 'chair'] },
+            { id: 2, opt1: 'boy',   opt2: 'boys',   correct: 'boys',   icons: ['boy1', 'boy2', 'boy3'] },
+            { id: 3, opt1: 'fan',   opt2: 'fans',   correct: 'fans',   icons: ['fan', 'fan'] },
+            { id: 4, opt1: 'ring',  opt2: 'rings',  correct: 'ring',   icons: ['ring'] },
+            { id: 5, opt1: 'pen',   opt2: 'pens',   correct: 'pens',   icons: ['pen', 'pen', 'pen'] },
+            { id: 6, opt1: 'hat',   opt2: 'hats',   correct: 'hat',    icons: ['cap'] }
+        ];
+
+        // ==================== RENDER SECTIONS ====================
+        function renderPosterContent() {
+            // 1. Render 8 Plural Rows
+            const rowsContainer = document.getElementById('plural-rows-container');
+            rowsContainer.innerHTML = '';
+
+            PLURAL_ROWS.forEach(row => {
+                const singularIconHTML = getIllustrationSVG(row.icon, "w-12 h-11 sm:w-14 sm:h-12");
+                const pluralIconClass = row.pluralCount === 4 ? "w-10 h-11 sm:w-11 sm:h-12" : "w-11 h-11 sm:w-13 sm:h-12";
+                let pluralIconsHTML = '';
+                for (let i = 0; i < row.pluralCount; i++) {
+                    pluralIconsHTML += getIllustrationSVG(row.icon, pluralIconClass);
+                }
+
+                const pluralWordSlotHTML = row.isSolvedInPoster
+                    ? `<span id="eng-row-plur-${row.id}" onclick="handleWordClick(event, '${row.plural}', this)" class="eng-read-target worksheet-font font-black text-2xl sm:text-[31px] text-[#1e1b18]">
+                           ${row.plural}
+                       </span>`
+                    : `<span id="eng-row-plur-${row.id}" onclick="handleBlankPluralClick(event, ${row.id}, '${row.plural}', this)" class="plural-blank-slot worksheet-font text-2xl sm:text-[30px]" title="اضغط لسماع الجمع (${row.plural})">
+                           <span class="dots-line">.........</span>
+                           <span class="plural-answer-text">${row.plural}</span>
+                       </span>`;
+
+                const rowEl = document.createElement('div');
+                rowEl.className = "grid grid-cols-[1fr_auto_1.25fr] items-center gap-1.5 sm:gap-3";
+                rowEl.innerHTML = `
+                    <!-- Left Box: Singular -->
+                    <div id="box-sing-${row.id}" onclick="handleWordClick(event, '${row.singular}', document.getElementById('eng-row-sing-${row.id}'))" class="word-card-box px-3 sm:px-5 py-1.5 min-h-[58px] flex items-center justify-between cursor-pointer">
+                        <span id="eng-row-sing-${row.id}" onclick="handleWordClick(event, '${row.singular}', this)" class="eng-read-target worksheet-font font-black text-2xl sm:text-[31px] text-[#1e1b18]">
+                            ${row.singular}
+                        </span>
+                        <div class="flex items-center justify-center">
+                            ${singularIconHTML}
+                        </div>
+                    </div>
+
+                    <!-- Coral-Red Right Arrow -->
+                    <div onclick="playFullConversionRow(${row.id})" class="cursor-pointer px-0.5 flex items-center justify-center hover:scale-105 transition" title="قراءة المفرد والجمع معاً">
+                        <svg width="38" height="28" viewBox="0 0 42 30" fill="none" class="w-8 sm:w-10 h-auto">
+                            <path d="M3 11H24V4L39 15L24 26V19H3V11Z" fill="#e56b55" stroke="#4a332a" stroke-width="2.4" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+
+                    <!-- Right Box: Plural -->
+                    <div id="box-plur-${row.id}" onclick="handleBlankPluralClick(event, ${row.id}, '${row.plural}', document.getElementById('eng-row-plur-${row.id}'))" class="word-card-box px-2.5 sm:px-4 py-1.5 min-h-[58px] flex items-center justify-between gap-1 cursor-pointer">
+                        ${pluralWordSlotHTML}
+                        <div class="flex items-center justify-end -space-x-1 sm:space-x-0.5">
+                            ${pluralIconsHTML}
+                        </div>
+                    </div>
+                `;
+                rowsContainer.appendChild(rowEl);
+            });
+
+            // 2. Render 6 Choose Cards
+            const chooseContainer = document.getElementById('choose-grid-container');
+            chooseContainer.innerHTML = '';
+
+            CHOOSE_CARDS.forEach(card => {
+                const iconsHTML = card.icons
+                    .map(ic => getIllustrationSVG(ic, card.icons.length === 1 ? "w-16 h-16" : "w-12 h-14 sm:w-14 sm:h-15"))
+                    .join('');
+
+                const isOpt1Correct = card.opt1 === card.correct;
+                const isOpt2Correct = card.opt2 === card.correct;
+
+                const cardEl = document.createElement('div');
+                cardEl.className = "choose-card px-2.5 py-2.5 flex flex-col items-center justify-between gap-2";
+                cardEl.innerHTML = `
+                    <!-- Illustration Area -->
+                    <div onclick="playChooseCardPair(${card.id})" class="w-full min-h-[64px] flex items-center justify-center gap-1 sm:gap-2 cursor-pointer" title="استمع للخيارين">
+                        ${iconsHTML}
+                    </div>
+
+                    <!-- Word Choices: (opt1 - opt2) -->
+                    <div class="worksheet-font font-black text-xl sm:text-[24px] text-[#231815] flex items-center justify-center flex-wrap leading-tight">
+                        <span>(</span>
+                        <span id="eng-choose-${card.id}-opt1"
+                              onclick="handleChoiceClick(event, '${card.opt1}', ${isOpt1Correct}, this)"
+                              class="eng-read-target ${isOpt1Correct ? 'choice-correct' : ''}">
+                            ${card.opt1}
+                        </span>
+                        <span class="mx-0.5">-</span>
+                        <span id="eng-choose-${card.id}-opt2"
+                              onclick="handleChoiceClick(event, '${card.opt2}', ${isOpt2Correct}, this)"
+                              class="eng-read-target ${isOpt2Correct ? 'choice-correct' : ''}">
+                            ${card.opt2}
+                        </span>
+                        <span>)</span>
+                    </div>
+                `;
+                chooseContainer.appendChild(cardEl);
+            });
+        }
+
+        // ==================== ORDERED STEPS FOR FULL LESSON AUTO-PLAY ====================
+        function buildSequentialSteps() {
+            const steps = [
+                { elId: 'eng-header-title', spoken: 'Top Grammar 1' },
+                { elId: 'eng-header-sub',   spoken: 'Singular and Plural' },
+                { elId: 'eng-sec1-title',   spoken: 'Change into plural' }
+            ];
+
+            PLURAL_ROWS.forEach(r => {
+                steps.push({ elId: `eng-row-sing-${r.id}`, spoken: r.singular });
+                steps.push({ elId: `eng-row-plur-${r.id}`, spoken: r.plural });
+            });
+
+            steps.push({ elId: 'eng-sec2-title', spoken: 'Choose the correct word' });
+
+            CHOOSE_CARDS.forEach(c => {
+                steps.push({ elId: `eng-choose-${c.id}-opt1`, spoken: c.opt1 });
+                steps.push({ elId: `eng-choose-${c.id}-opt2`, spoken: c.opt2 });
+            });
+
+            return steps;
+        }
+
+        // ==================== STATE & STEADY POINTING FINGER ====================
+        let currentFingerTargetEl = null;
+        let isAutoPlaying = false;
+        let autoPlayTimeout = null;
+        let stepTimers = [];
+        let showAllAnswers = true;
+
+        let speechRates = [
+            { value: 0.84, label: "السرعة: تعليمي واضح" },
+            { value: 0.68, label: "السرعة: بطيء للتأسيس" },
+            { value: 0.98, label: "السرعة: طبيعي" }
+        ];
+        let currentSpeedIdx = 0;
+        let repeatTwice = false;
+
+        /**
+         * Places the pointing finger steadily right underneath the target whole word element
+         * WITHOUT moving across letters or bobbing.
+         */
+        function placeFingerUnderElement(el) {
+            const finger = document.getElementById('reading-finger');
+            if (!el || !finger) return;
+
+            currentFingerTargetEl = el;
+            const rect = el.getBoundingClientRect();
+            const targetX = rect.left + (rect.width / 2);
+            const targetY = rect.bottom - 3;
+
+            finger.style.left = `${targetX}px`;
+            finger.style.top = `${targetY}px`;
+            finger.classList.add('visible', 'reading-active');
+        }
+
+        function clearActiveHighlights() {
+            document.querySelectorAll('.eng-read-target, .plural-blank-slot').forEach(el => el.classList.remove('word-active'));
+        }
+
+        function clearStepTimers() {
+            stepTimers.forEach(t => clearTimeout(t));
+            stepTimers = [];
+        }
+
+        window.addEventListener('scroll', () => {
+            if (currentFingerTargetEl) placeFingerUnderElement(currentFingerTargetEl);
+        }, { passive: true });
+        window.addEventListener('resize', () => {
+            if (currentFingerTargetEl) placeFingerUnderElement(currentFingerTargetEl);
+        });
+
+        // ==================== EDUCATIONAL NATURAL VOICE ENGINE ====================
+        let preferredEnglishVoice = null;
+        let availableEnglishVoices = [];
+
+        function scoreVoiceQuality(v) {
+            let score = 0;
+            const name = v.name.toLowerCase();
+            const lang = v.lang.toLowerCase();
+
+            if (!lang.startsWith('en')) return -999;
+
+            if (lang === 'en-us' || lang === 'en_us') score += 35;
+            else if (lang === 'en-gb' || lang === 'en_gb') score += 30;
+            else score += 15;
+
+            if (name.includes('natural')) score += 60;
+            if (name.includes('online')) score += 40;
+            if (name.includes('neural')) score += 50;
+            if (name.includes('premium') || name.includes('enhanced')) score += 45;
+
+            const topTeacherVoices = [
+                'ava', 'aria', 'jenny', 'ana', 'sonia', 'libby', 'ryan', 'guy',
+                'google us english', 'google uk english female', 'samantha',
+                'allison', 'karen', 'daniel', 'moira', 'serena', 'zira'
+            ];
+            for (let i = 0; i < topTeacherVoices.length; i++) {
+                if (name.includes(topTeacherVoices[i])) {
+                    score += (35 - i);
+                    break;
+                }
+            }
+
+            if (name.includes('compact') || name.includes('espeak')) score -= 50;
+            return score;
+        }
+
+        function loadPreferredEnglishVoice() {
+            if (!('speechSynthesis' in window)) return;
+            const voices = window.speechSynthesis.getVoices();
+            if (!voices.length) return;
+
+            availableEnglishVoices = voices
+                .filter(v => v.lang && v.lang.toLowerCase().startsWith('en'))
+                .sort((a, b) => scoreVoiceQuality(b) - scoreVoiceQuality(a));
+
+            if (availableEnglishVoices.length > 0) {
+                preferredEnglishVoice = availableEnglishVoices[0];
+            }
+
+            const selectEl = document.getElementById('voice-select');
+            if (selectEl && availableEnglishVoices.length > 0) {
+                const currentVal = selectEl.value;
+                selectEl.innerHTML = '';
+
+                availableEnglishVoices.slice(0, 12).forEach((v, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = v.name;
+                    const cleanLabel = v.name
+                        .replace(/Microsoft |Google |Apple /g, '')
+                        .replace(/Online \(Natural\) - /g, '🌟 ')
+                        .replace(/English /g, '');
+                    opt.textContent = idx === 0 ? `🌟 ${cleanLabel} (أفضل صوت تعليمي)` : `🎙️ ${cleanLabel}`;
+                    selectEl.appendChild(opt);
+                });
+
+                if (currentVal && currentVal !== 'auto' && availableEnglishVoices.some(v => v.name === currentVal)) {
+                    selectEl.value = currentVal;
+                    preferredEnglishVoice = availableEnglishVoices.find(v => v.name === currentVal);
+                } else if (preferredEnglishVoice) {
+                    selectEl.value = preferredEnglishVoice.name;
+                }
+            }
+        }
+
+        function handleVoiceChange(voiceName) {
+            const found = availableEnglishVoices.find(v => v.name === voiceName);
+            if (found) {
+                preferredEnglishVoice = found;
+                speakStaticEnglish('Cat', document.getElementById('eng-row-sing-1'));
+            }
+        }
+
+        if ('speechSynthesis' in window) {
+            loadPreferredEnglishVoice();
+            window.speechSynthesis.onvoiceschanged = loadPreferredEnglishVoice;
+        }
+
+        /**
+         * Core English TTS Helper: Speaks English text while keeping the highlight
+         * and pointing finger 100% STATIC under `targetEl`.
+         */
+        function speakStaticEnglish(textToSpeak, targetEl, onEndCallback) {
+            clearStepTimers();
+            clearActiveHighlights();
+
+            if (targetEl) {
+                targetEl.classList.add('word-active');
+                placeFingerUnderElement(targetEl);
+            }
+
+            const playOnce = (doneOnce) => {
+                if (!('speechSynthesis' in window)) {
+                    stepTimers.push(setTimeout(() => { if (doneOnce) doneOnce(); }, 900));
+                    return;
+                }
+
+                const utter = new SpeechSynthesisUtterance(textToSpeak);
+                utter.lang = preferredEnglishVoice ? preferredEnglishVoice.lang : 'en-US';
+                if (preferredEnglishVoice) utter.voice = preferredEnglishVoice;
+                utter.rate = speechRates[currentSpeedIdx].value;
+                utter.pitch = 1.04;
+
+                utter.onend = () => { if (doneOnce) doneOnce(); };
+                utter.onerror = () => { if (doneOnce) doneOnce(); };
+
+                window.speechSynthesis.speak(utter);
+            };
+
+            playOnce(() => {
+                if (repeatTwice) {
+                    stepTimers.push(setTimeout(() => {
+                        playOnce(() => {
+                            if (onEndCallback) onEndCallback();
+                        });
+                    }, 360));
+                } else {
+                    if (onEndCallback) onEndCallback();
+                }
+            });
+        }
+
+        // ==================== INTERACTION HANDLERS ====================
+        function handleWordClick(event, wordText, targetEl) {
+            event.stopPropagation();
+            if (isAutoPlaying) stopAutoPlay();
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            speakStaticEnglish(wordText, targetEl);
+        }
+
+        function handleBlankPluralClick(event, rowId, pluralWord, targetEl) {
+            event.stopPropagation();
+            if (isAutoPlaying) stopAutoPlay();
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            if (targetEl) targetEl.classList.add('revealed');
+            speakStaticEnglish(pluralWord, targetEl);
+        }
+
+        function handleChoiceClick(event, wordText, isCorrect, targetEl) {
+            event.stopPropagation();
+            if (isAutoPlaying) stopAutoPlay();
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            if (isCorrect && targetEl) {
+                targetEl.classList.add('selected-choice');
+            }
+            speakStaticEnglish(wordText, targetEl);
+        }
+
+        function playFullConversionRow(rowId) {
+            if (isAutoPlaying) stopAutoPlay();
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+            const row = PLURAL_ROWS.find(r => r.id === rowId);
+            if (!row) return;
+
+            const singEl = document.getElementById(`eng-row-sing-${row.id}`);
+            const plurEl = document.getElementById(`eng-row-plur-${row.id}`);
+            if (plurEl) plurEl.classList.add('revealed');
+
+            speakStaticEnglish(row.singular, singEl, () => {
+                stepTimers.push(setTimeout(() => {
+                    speakStaticEnglish(row.plural, plurEl);
+                }, 320));
+            });
+        }
+
+        function playChooseCardPair(cardId) {
+            if (isAutoPlaying) stopAutoPlay();
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+            const card = CHOOSE_CARDS.find(c => c.id === cardId);
+            if (!card) return;
+
+            const el1 = document.getElementById(`eng-choose-${card.id}-opt1`);
+            const el2 = document.getElementById(`eng-choose-${card.id}-opt2`);
+
+            speakStaticEnglish(card.opt1, el1, () => {
+                stepTimers.push(setTimeout(() => {
+                    speakStaticEnglish(card.opt2, el2);
+                }, 320));
+            });
+        }
+
+        // ==================== SEQUENTIAL AUTO-PLAY ====================
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                const allSteps = buildSequentialSteps();
+                startStepsSequence(allSteps, 0);
+            }
+        }
+
+        function playChooseSectionOnly() {
+            if (isAutoPlaying) stopAutoPlay();
+            const allSteps = buildSequentialSteps();
+            const chooseStartIdx = allSteps.findIndex(s => s.elId === 'eng-sec2-title');
+            startStepsSequence(allSteps, chooseStartIdx >= 0 ? chooseStartIdx : 0);
+        }
+
+        function startStepsSequence(stepsList, startIndex) {
+            isAutoPlaying = true;
+            updateAutoPlayButtonUI();
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+            let idx = startIndex;
+
+            function nextStep() {
+                if (!isAutoPlaying || idx >= stepsList.length) {
+                    stopAutoPlay();
+                    return;
+                }
+
+                const step = stepsList[idx];
+                const el = document.getElementById(step.elId);
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    if (el.classList.contains('plural-blank-slot')) {
+                        el.classList.add('revealed');
+                    }
+                }
+
+                autoPlayTimeout = setTimeout(() => {
+                    if (!isAutoPlaying) return;
+                    speakStaticEnglish(step.spoken, el, () => {
+                        if (!isAutoPlaying) return;
+                        idx++;
+                        autoPlayTimeout = setTimeout(nextStep, 450);
+                    });
+                }, 140);
+            }
+
+            nextStep();
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            clearStepTimers();
+            if (autoPlayTimeout) {
+                clearTimeout(autoPlayTimeout);
+                autoPlayTimeout = null;
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            updateAutoPlayButtonUI();
+        }
+
+        function updateAutoPlayButtonUI() {
+            const icon = document.getElementById('icon-auto-play');
+            const text = document.getElementById('text-auto-play');
+
+            if (isAutoPlaying) {
+                icon.className = 'fa-solid fa-stop';
+                text.textContent = 'إيقاف القراءة الآلية';
+            } else {
+                icon.className = 'fa-solid fa-play';
+                text.textContent = 'قراءة الدرس كاملاً بالترتيب';
+            }
+        }
+
+        // ==================== TOOLBAR CONTROLS ====================
+        function toggleShowAllAnswers() {
+            showAllAnswers = !showAllAnswers;
+            const container = document.getElementById('poster-container');
+            const btn = document.getElementById('btn-answers');
+            const label = document.getElementById('answers-label');
+
+            container.classList.toggle('show-all-answers', showAllAnswers);
+            if (!showAllAnswers) {
+                document.querySelectorAll('.plural-blank-slot').forEach(el => el.classList.remove('revealed'));
+                document.querySelectorAll('.selected-choice').forEach(el => el.classList.remove('selected-choice'));
+            }
+
+            if (showAllAnswers) {
+                label.textContent = 'الإجابات معروضة';
+                btn.className = 'flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-600 shadow-sm transition text-xs sm:text-sm';
+            } else {
+                label.textContent = 'إظهار الحل';
+                btn.className = 'flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold text-emerald-900 bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 transition text-xs sm:text-sm';
+            }
+        }
+
+        function cycleSpeechSpeed() {
+            currentSpeedIdx = (currentSpeedIdx + 1) % speechRates.length;
+            document.getElementById('speed-label').textContent = speechRates[currentSpeedIdx].label;
+        }
+
+        function toggleRepeatWord() {
+            repeatTwice = !repeatTwice;
+            const label = document.getElementById('repeat-label');
+            label.textContent = repeatTwice ? 'النطق: مرتان للحفظ' : 'النطق: مرة واحدة';
+        }
+
+        // Initialize on Window Load
+        window.onload = function() {
+            renderPosterContent();
+        };
+    </script>
+</body>
+</html>
